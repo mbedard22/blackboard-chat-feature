@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% from "macros.html" import box %}
+
+{% block content %}
+<div class="border-[1px] border-gray-300 m-7 p-5 flex">
+    <div class="w-full">
+        {{ box("My Messages") }}
+        {{ box("My Announcements") }}
+    </div>
+    <div class="w-full mx-6">
+        <div class="border-[1px] border-gray-300 w-full h-40 mb-6">
+            <p class="border-b-[1px] border-gray-300 p-2 bg-gray-100">My Courses</p>
+            
+        </div>
+        {{ box("UML Library Resources") }}
+        {{ box("My Organizations") }}
+        {{ box("Organization Search") }}
+    </div>
+    <div class="w-full">
+        {{ box("Undergraduate Online Student Ecperience Survey") }}
+        {{ box("Acedemic Resources") }}
+        {{ box("Tech Support") }}
+    </div>
+</div>
+
+{% endblock %}
