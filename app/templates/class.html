@@ -1,28 +1,59 @@
 {% extends "base.html" %}
+{% from "macros.html" import channel, channelHeader, message %}
 
 {% block content %}
-<div class="w-full h-12 border-[1px] flex items-center">
+<div class="w-full h-12 border-[1px] border-gray-300 flex items-center">
     <a href="#" class="text-sm font-bold ml-5 ">COMP 4110 P 1 201 Software Engineering I 2022 Fall</a>
     <a href="#">
-        <img class="h-5 w-5 ml-3" src="static/images/expand.png">
+        <i class="fa-solid fa-caret-down ml-5"></i>
     </a>
     <p class="text-xs ml-10 text-gray-600">Home Page</p>
 </div>
 <div class="flex">
     <div class="w-56 h-screen bg-gray-800 p-5">
-        <p class="text-sm font-bold mt-10 text-white">COMP 4110 P 1 201 Software Engineering I 2022 Fall</p>
-        <p class="text-sm pl-3 pb-6 mt-3 text-white border-b-[1px] border-white cursor-pointer">Home Page</p>
-        <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Announcements</p>
-        <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Discord</p>
-        <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Gradescope</p>
-        <p class="text-sm pl-3 pb-6 mt-3 text-white border-b-[1px] border-white cursor-pointer">Groups</p>
-        <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Grade Book</p>
-        <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Live Chat</p>
+        <div id="options">
+            <p class="text-sm font-bold mt-10 text-white">COMP 4110 P 1 201 Software Engineering I 2022 Fall</p>
+            <p class="text-sm pl-3 pb-6 mt-3 text-white border-b-[1px] border-blue-600 cursor-pointer">Home Page</p>
+            <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Announcements</p>
+            <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Discord</p>
+            <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Gradescope</p>
+            <p class="text-sm pl-3 pb-6 mt-3 text-white border-b-[1px] border-blue-600 cursor-pointer">Groups</p>
+            <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Grade Book</p>
+        </div>
+        <p id="showLivechat" class="text-sm pl-3 mt-3 text-white cursor-pointer">Live Chat</p>
     </div>
-    <div id="app" class="w-full h-screen">
+    <!-- start of our actual application -->
+    <div id="liveChat" class="hidden w-full h-screen">
+        <!-- channel select column -->
+        <div class="w-56 h-screen bg-gray-600 p-3">
+            
+            {{ channelHeader("Class Channels", "classMinimize") }}
+            <ul id="class">
+                {{ channel("General") }}
+            </ul>
+            {{ channelHeader("Private Channels", "privMinimize") }}
+            <ul id="private">
+                {{ channel("Anthony Lawlor") }}
+            </ul>
+        </div>
+        <!-- channel interaction --> 
+        <div class="w-full h-full p-10 flex flex-col justify-end bg-gray-50">
+            <div id="messages" class="overflow-y-scroll h-full flex flex-col justify-end">
+                {{ message("this is a test", "Gabriel Vega", "11:30 pm") }}
+                {{ message("this is a test", "Gabriel Vega", "11:30 pm") }}
+                {{ message("this is a test", "Gabriel Vega", "11:30 pm") }}
+            </div>
+            <form>
+                <input id="message" type="text" placeholder="Type your message and then hit enter to send." class="w-full border-2 border-black p-3 text-gray-700 text-lg rounded-lg">
+            </form>
 
+        </div>
+    </div>
+    <!-- the html for the other options -->
+    <div id="default" class="w-full h-screen p-5 m-5">
+        <p class="text-lg pl-3 mt-3 cursor-pointer">Home Page</p>
+        <p class="h-full text-2xl font-bold mt-5 border-2 border-gray-300 text-gray-500 p-10">There is no content to view on this page </p>
+        
     </div>
 </div>
-
-
 {% endblock %}
