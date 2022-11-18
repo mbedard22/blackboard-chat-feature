@@ -10,7 +10,8 @@
     <div class="w-full mx-6">
         <div class="border-[1px] border-gray-300 w-full h-40 mb-6">
             <p class="border-b-[1px] border-gray-300 p-2 bg-gray-100">My Courses</p>
-            
+            <p class="w-full text-gray-600 text-xs m-4">Courses where you are: Student</p>
+            <a href="{{ url_for('routes.exampleClass') }}" class="w-full text-blue-600 text-sm m-4">COMP 4110 P 1 201 Software Engineering I 2022 Fall</a>
         </div>
         {{ box("UML Library Resources") }}
         {{ box("My Organizations") }}
@@ -22,5 +23,4 @@
         {{ box("Tech Support") }}
     </div>
 </div>
-
 {% endblock %}

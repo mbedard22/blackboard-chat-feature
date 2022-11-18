@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="w-full h-12 border-[1px] flex items-center">
+    <a href="#" class="text-sm font-bold ml-5 ">COMP 4110 P 1 201 Software Engineering I 2022 Fall</a>
+    <a href="#">
+        <img class="h-5 w-5 ml-3" src="static/images/expand.png">
+    </a>
+    <p class="text-xs ml-10 text-gray-600">Home Page</p>
+</div>
+<div class="flex">
+    <div class="w-56 h-screen bg-gray-800 p-5">
+        <p class="text-sm font-bold mt-10 text-white">COMP 4110 P 1 201 Software Engineering I 2022 Fall</p>
+        <p class="text-sm pl-3 pb-6 mt-3 text-white border-b-[1px] border-white cursor-pointer">Home Page</p>
+        <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Announcements</p>
+        <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Discord</p>
+        <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Gradescope</p>
+        <p class="text-sm pl-3 pb-6 mt-3 text-white border-b-[1px] border-white cursor-pointer">Groups</p>
+        <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Grade Book</p>
+        <p class="text-sm pl-3 mt-3 text-white cursor-pointer">Live Chat</p>
+    </div>
+    <div id="app" class="w-full h-screen">
+
+    </div>
+</div>
+
+
+{% endblock %}
