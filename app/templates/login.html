@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% from "macros.html" import box %}
+
+{% block content %}
+<div class="border-[1px] border-gray-300 m-7 p-5 flex">
+    <div class="border-[1px] border-gray-300 w-full h-40 mb-6">
+        <p class="border-b-[1px] border-gray-300 p-2 bg-gray-100">My Courses</p>
+        <p class="w-full text-gray-600 text-xs m-4">Please Select a User</p>
+        <form id="userSelect" method="post" action="{{url_for('main.login')}}" class="ml-4 flex flex-col w-40">
+            <select id="users" name="users">
+                <option value="NULL">Select Option</option>
+                {% for user in users %}
+                    <option value="{{user[0]}}">{{user[1]}}</option>
+                {% endfor %}       
+            </select>
+            <input type="submit" value="Submit" class="mt-5 border-2 border-black cursor-pointer rounded-lg">  
+        </form>
+    </div>
+</div>
+{% endblock %}

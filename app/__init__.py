@@ -1,9 +1,18 @@
 from flask import Flask
-from app.routes import routes
+from flask_socketio import SocketIO
+
+sockio = SocketIO()
 
 def create_app():
     app = Flask(__name__)
 
-
-    app.register_blueprint(routes)
+    from .blueprints import main as main_blueprints
+    app.register_blueprint(main_blueprints)
+    sockio.init_app(app, cors_allowed_origins="*")
+    
     return app
+
+
+
+
+

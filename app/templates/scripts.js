@@ -1,6 +1,8 @@
 let classMinimize = false;
 let privMinimize = false;
 let livechat = false;
+var socket = io.connect("http://127.0.0.1:8000");
+
 $(function(){
     $("#classMinimize").click(function() {
         if (classMinimize == false){
@@ -48,15 +50,24 @@ $(function(){
         }
     });
 
-    $("form").submit(function (e) {
+    //handles outgoing messages to the python server 
+    $("#msg").submit(function (e) {
         e.preventDefault();
-        const messageSent = $(this).children().val();
+        let msg = $(this).children().val();
+        let dateTime = new Date();
+        const messageSent = `{{user}}, ${dateTime.getMonth()}/${dateTime.getDay()}/${dateTime.getFullYear()} ${timeCorrection(dateTime.getHours(), dateTime.getMinutes())}, ${msg}`;
         $(this).children().val("");
-
-        $("#messages").children(":last-child").after(returnMessage(messageSent, "Gabriel Vega", "11:30 pm"))
-        console.log(`sent message: ${messageSent}`);
-
+        
+        socket.send(messageSent)
     });
+
+    //handles incoming messages from the python server
+    socket.on("message", function(msg) {
+        let msgComp = msg.split(","); 
+        $("#messages").append(returnMessage(msgComp[2], msgComp[0], msgComp[1]))
+    });
+
+
 });
 
 function returnMessage(body, sender, timestamp){
@@ -66,4 +77,11 @@ function returnMessage(body, sender, timestamp){
                 </div>
                 <p class="ml-5 mb-5 text-gray-700">${body}</p>`
     return li;
+}
+
+function timeCorrection(hours, minutes){
+    if (hours > 12){
+        return `${hours-12}:${minutes} pm`;
+    }
+    return `${hours}:${minutes} am`;
 }
