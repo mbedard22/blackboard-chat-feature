@@ -29,11 +29,21 @@
             
             {{ channelHeader("Class Channels", "classMinimize") }}
             <ul id="class">
-                {{ channel("General") }}
+                {% for c in cc %}
+                    {{ channel(c) }}
+                {% endfor %}
             </ul>
             {{ channelHeader("Private Channels", "privMinimize") }}
             <ul id="private">
-                {{ channel("Anthony Lawlor") }}
+                {% for c in pc %}
+                    {{ channel(c) }}
+                {% endfor %}
+            </ul>
+            {{ channelHeader("Group Channels", "groupMinimize") }}
+            <ul id="group">
+                {% for c in gc %}
+                    {{ channel(c) }}
+                {% endfor %}
             </ul>
         </div>
         <!-- channel interaction --> 
@@ -55,4 +65,10 @@
         
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    {% include "scripts.js" %}
+</script>
 {% endblock %}

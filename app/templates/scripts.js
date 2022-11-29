@@ -1,9 +1,12 @@
 let classMinimize = false;
 let privMinimize = false;
+let groupMinimize = false;
 let livechat = false;
 var socket = io.connect("http://127.0.0.1:8000");
+let currentChannel = "general";
 
 $(function(){
+    //handles the minimizing code 
     $("#classMinimize").click(function() {
         if (classMinimize == false){
             classMinimize = true;
@@ -16,6 +19,20 @@ $(function(){
             $("#class").children().removeClass("hidden");
             $("#classMinimize").children("i").removeClass("fa-caret-right");
             $("#classMinimize").children("i").addClass("fa-caret-down");
+        }
+    });
+    $("#groupMinimize").click(function() {
+        if (groupMinimize == false){
+            groupMinimize = true;
+            $("#group").children().addClass("hidden");
+            $("#groupMinimize").children("i").removeClass("fa-caret-down");
+            $("#groupMinimize").children("i").addClass("fa-caret-right");
+        }
+        else{
+            groupMinimize = false;
+            $("#group").children().removeClass("hidden");
+            $("#groupMinimize").children("i").removeClass("fa-caret-right");
+            $("#groupMinimize").children("i").addClass("fa-caret-down");
         }
     });
     $("#privMinimize").click(function() {
@@ -33,6 +50,7 @@ $(function(){
         }
     });
 
+    //changes the content of the page to the blank default
     $("#options").click(function() {
         if (livechat == true){
             livechat = false;
@@ -41,30 +59,61 @@ $(function(){
             $("#default").removeClass("hidden");
         }
     });
+
+    //changes the content of the page to the livechat 
     $("#showLivechat").click(function() {
         if (livechat == false){
             livechat = true;
             $("#liveChat").removeClass("hidden");
             $("#liveChat").addClass("flex");
             $("#default").addClass("hidden");
+            socket.send(`retrieve,${currentChannel}`)
         }
     });
+
+    //loads all the messages depending on which class chat you click
+    {% for c in cc %}
+    $("#{{c}}").click(function(){
+        socket.send("retrieve,{{c}}");
+        currentChannel = "{{c}}";
+    });
+    {% endfor %}
+
+    //loads all the messages depending on which private chat you click
+
+    //loads all the messages depending on which group chat you click
 
     //handles outgoing messages to the python server 
     $("#msg").submit(function (e) {
         e.preventDefault();
         let msg = $(this).children().val();
         let dateTime = new Date();
-        const messageSent = `{{user}}, ${dateTime.getMonth()}/${dateTime.getDay()}/${dateTime.getFullYear()} ${timeCorrection(dateTime.getHours(), dateTime.getMinutes())}, ${msg}`;
+        const messageSent = `msg,{{user}},${dateTime.getMonth()}/${dateTime.getDay()}/${dateTime.getFullYear()} ${timeCorrection(dateTime.getHours(), dateTime.getMinutes())},${msg},${currentChannel}`;
         $(this).children().val("");
         
-        socket.send(messageSent)
+        socket.send(messageSent);
     });
 
     //handles incoming messages from the python server
     socket.on("message", function(msg) {
         let msgComp = msg.split(","); 
-        $("#messages").append(returnMessage(msgComp[2], msgComp[0], msgComp[1]))
+
+        //checks to see if we are recieving a message
+        if (msgComp[0] == "msg"){
+            if (msgComp[4] == currentChannel){
+                $("#messages").append(returnMessage(msgComp[3], msgComp[1], msgComp[2]));
+            }
+        }
+        
+        //checks to see if we are recieving a messages from a channel
+        if (msgComp[0] == "retrieve"){
+            $("#messages").html("");
+            for (let i = 1; i < msgComp.length; i++){
+                let data = msgComp[i].split(";");
+                $("#messages").append(returnMessage(data[0], data[2], data[1]));
+            }
+            
+        }
     });
 
 

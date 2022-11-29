@@ -21,9 +21,6 @@
 
     {% block content %}{% endblock %}
     <!-- imports the js may need to split up into files -->
-    <script>
-        {% include "scripts.js" %}
-    </script>
-    
+    {% block scripts %}{% endblock %}    
 </body>
 </html>
