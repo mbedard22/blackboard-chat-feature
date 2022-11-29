@@ -9,6 +9,7 @@ def handleMessage(msg):
 
     #checks to see if you should send message
     if msgComp[0] == "msg":
+        storeMessage(msgComp)
         send(msg, broadcast=True)
 
     #checks to see if someone is requesting a channel log
@@ -29,3 +30,12 @@ def retrieveMessages(channel):
     connection.close()
 
     return msgD[:-1]
+
+def storeMessage(msgComp):
+    connection = sqlite3.connect("app/livechat.db")
+    db = connection.cursor()
+    db.execute(f"SELECT max(id) FROM messages;")
+    id = db.fetchall()[0][0] + 1
+    db.execute(f"INSERT INTO messages VALUES ({id}, '{msgComp[2]}', '{msgComp[3]}', '{msgComp[1]}', '{msgComp[4]}');")   
+    connection.commit() 
+    connection.close()
