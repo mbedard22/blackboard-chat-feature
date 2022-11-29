@@ -80,8 +80,14 @@ function returnMessage(body, sender, timestamp){
 }
 
 function timeCorrection(hours, minutes){
-    if (hours > 12){
-        return `${hours-12}:${minutes} pm`;
+    let newMinutes = "";
+    if (minutes < 10){
+        newMinutes = `0${minutes}`;
     }
-    return `${hours}:${minutes} am`;
+    newMinutes = minutes.toString();
+    if (hours > 12){
+        return `${hours-12}:${newMinutes} pm`;
+    }
+    
+    return `${hours}:${newMinutes} am`;
 }
