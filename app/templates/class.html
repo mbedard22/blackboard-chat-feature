@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import channel, channelHeader, message %}
+{% from "macros.html" import channel, channelHeader, message, addChannel %}
 
 {% block content %}
 <div class="w-full h-12 border-[1px] border-gray-300 flex items-center">
@@ -26,7 +26,9 @@
     <div id="liveChat" class="hidden w-full h-screen">
         <!-- channel select column -->
         <div class="w-56 h-screen bg-gray-600 p-3">
-            
+            {{ addChannel("Add Channel", "addClassChannel") }}
+            <ul id="add">
+            </ul>
             {{ channelHeader("Class Channels", "classMinimize") }}
             <ul id="class">
                 {% for c in cc %}
@@ -45,7 +47,16 @@
                     {{ channel(c) }}
                 {% endfor %}
             </ul>
+          
         </div>
+
+       
+        <div id="addchannelpopup" class = "hidden w-full h-20 p-10 bg-gray-50">
+            <form id = "chnName">
+                <input id="channelName" type="text" placeholder="Type channel name" class="w-full border-2 border-black p-3 text-gray-700 text-lg rounded-lg">
+            </form>
+        </div>
+    
         <!-- channel interaction --> 
         <div class="w-full h-full p-10 flex flex-col justify-end bg-gray-50">
             <div id="messages" class="overflow-y-scroll h-full flex flex-col justify-end">
