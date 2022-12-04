@@ -24,9 +24,30 @@
 <p class="ml-5 mb-5 text-gray-700">{{body}}</p>
 {% endmacro %}
 
-{% macro addChannel(name, id) %}
-<div id="{{ id }}" class="flex items-center mt-4 cursor-pointer">
-    <p class="ml-2 text-white">{{ name }}</p>
-    <i class="fa-solid fa-plus pl-3 text-blue-300"></i>
+{% macro addChannel(admin) %}
+<div id="channelPopup" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+            <div class="mt-3 text-center sm:mt-5 flex flex-col items-center">
+                <form id="channelForm">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">Please enter a name for the channel</h3>
+                    <input type="text" name="name" id="name" class="my-5 p-2 block w-full h-8 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Name needs to be unique" required>
+                    <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">Please select the type of channel</h3>
+                    <select id="type" name="type" class="h-full my-5 rounded-md bg-transparent border-2 border-gray-300 py-0 pl-2 pr-7 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
+                        <option value="NULL">Select Option</option>
+                        {% if admin == 1 %}
+                        <option value="cc">Class Channel</option>
+                        {% endif %}
+                        <option value="pc">Private Channel</option>
+                        <option value="gc">Group Channel</option>
+                    </select>
+                    <input type="submit" value="Submit" class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm">
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
 </div>
 {% endmacro %}

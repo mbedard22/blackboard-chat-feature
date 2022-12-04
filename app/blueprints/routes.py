@@ -26,8 +26,15 @@ def exampleClass():
     
     #pulls all the channels that the user is a part of
     cc, pc, gc = fetchUserChannels(user)
+    admin = fetchUserPrivlage(user)
 
-    return render_template("class.html", title="Home Page -- COMP 4110", user=user, cc=cc, pc=pc, gc=gc)
+    connection = sqlite3.connect("app/livechat.db")
+    db = connection.cursor()
+    db.execute("SELECT email, name FROM users")
+    users = db.fetchall()
+    connection.close()
+
+    return render_template("class.html", title="Home Page -- COMP 4110", user=user, cc=cc, pc=pc, gc=gc, admin=admin, users=users)
 
 
 def fetchUserChannels(user):
@@ -49,3 +56,9 @@ def fetchUserChannels(user):
     connection.close()
 
     return classChannels, privateChannels, groupChannels
+
+def fetchUserPrivlage(user):
+    connection = sqlite3.connect("app/livechat.db")
+    db = connection.cursor()
+    db.execute(f"SELECT admin FROM users WHERE email = '{user}'")
+    return db.fetchall()[0][0]

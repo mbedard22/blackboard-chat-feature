@@ -19,8 +19,12 @@ def handleMessage(msg):
         send(msg)
 
     if msgComp[0] == "create":
-        createClassChannel(msgComp[1])
-        send(msg)
+        if msgComp[1] == 'cc':
+            createClassChannel(msgComp[2])
+        elif msgComp[1] == 'pc':
+            createPrivateChannel(msgComp[2], msgComp[3:])
+        elif msgComp[1] == 'gc':
+            createGroupChannel(msgComp[2], msgComp[3:])
 
 
 def retrieveMessages(channel):
@@ -48,8 +52,28 @@ def storeMessage(msgComp):
 def createClassChannel(channelName):
     connection = sqlite3.connect("app/livechat.db")
     db = connection.cursor()
+    db.execute("SELECT email FROM users")
+    users = db.fetchall()
     db.execute(f"INSERT INTO channels VALUES('{channelName}', 'cc');")
-    db.execute(f"INSERT INTO userChannels VALUES('{channelName}', 'anthonylawlor@gmail.com');")
+    for user in users:
+        db.execute(f"INSERT INTO userChannels VALUES('{channelName}', '{user[0]}');")
     connection.commit() 
     connection.close()
 
+def createPrivateChannel(channelName, users):
+    connection = sqlite3.connect("app/livechat.db")
+    db = connection.cursor()
+    db.execute(f"INSERT INTO channels VALUES('{channelName}', 'pc');")
+    for user in users:
+        db.execute(f"INSERT INTO userChannels VALUES('{channelName}', '{user}');")
+    connection.commit() 
+    connection.close()
+
+def createGroupChannel(channelName, users):
+    connection = sqlite3.connect("app/livechat.db")
+    db = connection.cursor()
+    db.execute(f"INSERT INTO channels VALUES('{channelName}', 'gc');")
+    for user in users:
+        db.execute(f"INSERT INTO userChannels VALUES('{channelName}', '{user}');")
+    connection.commit() 
+    connection.close()

@@ -4,16 +4,27 @@ import sqlite3
 connection = sqlite3.connect("app/livechat.db")
 db = connection.cursor()
 
-# db.execute("")
-# print(db.fetchall())
+# db.execute("drop table users")
+# db.execute("drop table channels")
+# db.execute("drop table userChannels")
+# db.execute("drop table messages")
+
+db.execute("update users set name = 'andrew farrell' where name = 'andrew arrell'")
+print(db.fetchall())
 
 
 
+# db.execute("INSERT INTO channels VALUES ('general', 'cc');")
 # db.execute("INSERT INTO channels VALUES ('homework', 'cc');")
 # db.execute("INSERT INTO userChannels VALUES ('homework', 'gabrielvega@gmail.com');")
 # db.execute("INSERT INTO userChannels VALUES ('homework', 'mattbedard@gmail.com');")
 # db.execute("INSERT INTO userChannels VALUES ('homework', 'anthonylawlor@gmail.com');")
 # db.execute("INSERT INTO userChannels VALUES ('homework', 'andrewfarrell@gmail.com');")
+# db.execute("INSERT INTO userChannels VALUES ('general', 'gabrielvega@gmail.com');")
+# db.execute("INSERT INTO userChannels VALUES ('general', 'mattbedard@gmail.com');")
+# db.execute("INSERT INTO userChannels VALUES ('general', 'anthonylawlor@gmail.com');")
+# db.execute("INSERT INTO userChannels VALUES ('general', 'andrewfarrell@gmail.com');")
+# db.execute("INSERT INTO messages VALUES (1, '10/1/2022 11:24 pm', 'test from the db', 'gabrielvega@gmail.com', 'general', 0);")
 # db.execute("INSERT INTO messages VALUES (2, '10/1/2022 11:24 pm', 'test from the db', 'gabrielvega@gmail.com', 'homework', 0);")
 # db.execute("INSERT INTO users VALUES ('gabrielvega@gmail.com', 'gabriel vega', 1);")
 # db.execute("INSERT INTO users VALUES ('mattbedard@gmail.com', 'matt bedard', 0);")

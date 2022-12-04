@@ -1,12 +1,12 @@
 let classMinimize = false;
 let privMinimize = false;
 let groupMinimize = false;
-let addChannelHidden = true;
 let livechat = false;
 var socket = io.connect("http://127.0.0.1:8000");
 let currentChannel = "general";
 
 $(function(){
+    $("#channelPopup").hide();
     //handles the minimizing code 
     $("#classMinimize").click(function() {
         if (classMinimize == false){
@@ -73,25 +73,46 @@ $(function(){
     });
 
 
-
-    $("#addClassChannel").click(function() {
-        //socket.send("create, Testing54321");
-        if (addChannelHidden == false){
-            addChannelHidden = true;
-            $("#addchannelpopup").addClass("hidden");
-        }
-        else{
-            addChannelHidden = false;
-            $("#addchannelpopup").removeClass("hidden");
-        }
+    //adds new channels depending on which one you click on 
+    //shows the hidden pop up
+    $("#addChannel").click(function() {
+        $("#channelPopup").show();
     });
-
-    $("#chnName").submit(function (e) {
+    //deals with the submittion 
+    $("#channelForm").on("submit", function(e) {
         e.preventDefault();
-        let msg = $(this).children().val();
-        msgsend = "create," + msg;
-        socket.send(msgsend)
+        $("#channelPopup").hide();
+        let name = $("#name").val();
+        let type = $("#type").val();
+        let msgsend = `create,`;
+        if(type == "pc"){
+            msgsend += `${type},${name},${$("#channelUsers").val()},{{user}}`;
+        }
+        else if(type == "gc"){
+            msgsend += `${type},${name},`;
+            for (usr of $("#channelUsers").val()){
+                msgsend += `${usr},`;
+            }
+            msgsend += `{{user}}`;
+        }
+        else if (type == "cc"){
+            msgsend += `${type},${name}`;
+        }
+        socket.send(msgsend);
     });
+    //if it is a priv channel add this field
+    $("#type").on("change", function(e){
+        $("#additionalInput").remove();
+        if ($("#type").val() === "pc"){
+            let inpHtml = pcAddInp();
+            $("#type").after(inpHtml);
+        }
+        else if ($("#type").val() === "gc"){
+            let inpHtml = gcAddInp();
+            $("#type").after(inpHtml);
+        }
+    });
+
 
     //loads all the messages depending on which class chat you click
     {% for c in cc %}
@@ -101,12 +122,21 @@ $(function(){
     });
     {% endfor %}
 
-
-
-
     //loads all the messages depending on which private chat you click
+    {% for privC in pc %}
+    $("#{{privC}}").click(function(){
+        socket.send("retrieve,{{privC}}");
+        currentChannel = "{{privC}}";
+    });
+    {% endfor %}
 
     //loads all the messages depending on which group chat you click
+    {% for groupC in gc %}
+    $("#{{groupC}}").click(function(){
+        socket.send("retrieve,{{groupC}}");
+        currentChannel = "{{groupC}}";
+    });
+    {% endfor %}
 
     //handles outgoing messages to the python server 
     $("#msg").submit(function (e) {
@@ -164,4 +194,29 @@ function timeCorrection(hours, minutes){
     }
     
     return `${hours}:${newMinutes} am`;
+}
+
+function pcAddInp(){
+    let html = `
+            <div id="additionalInput">
+                <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">Please select a user</h3>
+                <select id="channelUsers" name="channelUsers" class="h-full my-5 rounded-md bg-transparent border-2 border-gray-300 py-0 pl-2 pr-7 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
+                    {% for usr in users %}
+                        {% if usr[0] != user %}<option value="{{usr[0]}}">{{usr[1]}}</option>{% endif %}
+                    {% endfor %}
+                </select>
+            </div>`
+    return html
+}
+function gcAddInp(){
+    let html = `
+    <div id="additionalInput">
+        <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">Please hold down ctrl and select users</h3>
+        <select id="channelUsers" name="channelUsers" class="h-full my-5 rounded-md bg-transparent border-2 border-gray-300 py-0 pl-2 pr-7 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required multiple>
+            {% for usr in users %}
+                {% if usr[0] != user %}<option value="{{usr[0]}}">{{usr[1]}}</option>{% endif %}
+            {% endfor %}
+        </select>
+    </div>`
+    return html
 }
