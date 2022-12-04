@@ -11,7 +11,7 @@
 
 {% macro channelHeader(name, id) %}
 <div id="{{ id }}" class="flex items-center mt-4 cursor-pointer">
-    <i class="fa-solid fa-caret-down pl-3 text-blue-300"></i>
+    <i class="fa-solid fa-caret-down pl-3 text-blue-300 "></i>
     <p class="ml-2 text-white">{{ name }}</p>
 </div>
 {% endmacro %}
@@ -22,4 +22,11 @@
     <p class="ml-3 text-sm text-gray-400">{{time}}</p>
 </div>
 <p class="ml-5 mb-5 text-gray-700">{{body}}</p>
+{% endmacro %}
+
+{% macro addChannel(name, id) %}
+<div id="{{ id }}" class="flex items-center mt-4 cursor-pointer">
+    <p class="ml-2 text-white">{{ name }}</p>
+    <i class="fa-solid fa-plus pl-3 text-blue-300"></i>
+</div>
 {% endmacro %}

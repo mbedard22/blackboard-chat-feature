@@ -1,6 +1,7 @@
 let classMinimize = false;
 let privMinimize = false;
 let groupMinimize = false;
+let addChannelHidden = true;
 let livechat = false;
 var socket = io.connect("http://127.0.0.1:8000");
 let currentChannel = "general";
@@ -71,6 +72,27 @@ $(function(){
         }
     });
 
+
+
+    $("#addClassChannel").click(function() {
+        //socket.send("create, Testing54321");
+        if (addChannelHidden == false){
+            addChannelHidden = true;
+            $("#addchannelpopup").addClass("hidden");
+        }
+        else{
+            addChannelHidden = false;
+            $("#addchannelpopup").removeClass("hidden");
+        }
+    });
+
+    $("#chnName").submit(function (e) {
+        e.preventDefault();
+        let msg = $(this).children().val();
+        msgsend = "create," + msg;
+        socket.send(msgsend)
+    });
+
     //loads all the messages depending on which class chat you click
     {% for c in cc %}
     $("#{{c}}").click(function(){
@@ -78,6 +100,9 @@ $(function(){
         currentChannel = "{{c}}";
     });
     {% endfor %}
+
+
+
 
     //loads all the messages depending on which private chat you click
 
