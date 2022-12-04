@@ -41,7 +41,7 @@ def storeMessage(msgComp):
     db = connection.cursor()
     db.execute(f"SELECT max(id) FROM messages;")
     id = db.fetchall()[0][0] + 1
-    db.execute(f"INSERT INTO messages VALUES ({id}, '{msgComp[2]}', '{msgComp[3]}', '{msgComp[1]}', '{msgComp[4]}');")   
+    db.execute(f"INSERT INTO messages VALUES ({id}, '{msgComp[2]}', '{msgComp[3]}', '{msgComp[1]}', '{msgComp[4]}', 0);")   
     connection.commit() 
     connection.close()
 
