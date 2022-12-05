@@ -28,6 +28,7 @@ def exampleClass():
     cc, pc, gc = fetchUserChannels(user)
     admin = fetchUserPrivlage(user)
 
+    #retuns all the users from the db 
     connection = sqlite3.connect("app/livechat.db")
     db = connection.cursor()
     db.execute("SELECT email, name FROM users")
@@ -46,6 +47,7 @@ def fetchUserChannels(user):
     db = connection.cursor()
     db.execute(f"SELECT channels.name, type FROM userChannels, channels WHERE userChannels.channelName = channels.name and userEmail = '{user}'")
     channels = db.fetchall()
+    print(channels)
     for channel in channels:
         if channel[1] == 'pc':
             privateChannels.append(channel[0])

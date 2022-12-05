@@ -6,7 +6,6 @@ var socket = io.connect("http://127.0.0.1:8000");
 let currentChannel = "general";
 
 $(function(){
-    $("#channelPopup").hide();
     //handles the minimizing code 
     $("#classMinimize").click(function() {
         if (classMinimize == false){
@@ -72,6 +71,37 @@ $(function(){
         }
     });
 
+    //code to manage the admins
+    //shows the hidden pop up
+    $("#manAdmin").click(function() {
+        $("#manageAdmins").show();
+    });
+    $("#adminsForm").on("submit", function(e) {
+        e.preventDefault();
+        sendMsg = "admin"
+        for (let i = 0; i < 4; i ++){
+            if ($(`#p${i}`).is(":checked") ==  true){
+                let val = $(`#p${i}`).val()
+                sendMsg += `,${val},1`;
+            } else{
+                let val = $(`#p${i}`).val()
+                sendMsg += `,${val},0`;
+            }
+        }
+        $("#manageAdmins").hide();
+        socket.send(sendMsg);
+    });
+
+    //adds handles deleting a channel
+    //shows the hidden pop up
+    $("#removeChannel").click(function() {
+        $("#delChannelPopup").show();
+    });
+    $("#delChannelForm").on("submit", function(e) {
+        e.preventDefault();
+        $("#delChannelPopup").hide();
+        socket.send(`remove,${$('#delChannel').val()}`);
+    });
 
     //adds new channels depending on which one you click on 
     //shows the hidden pop up
@@ -143,6 +173,7 @@ $(function(){
         e.preventDefault();
         let msg = $(this).children().val();
         let dateTime = new Date();
+        console.log(dateTime, dateTime.getDay());
         const messageSent = `msg,{{user}},${dateTime.getMonth()}/${dateTime.getDay()}/${dateTime.getFullYear()} ${timeCorrection(dateTime.getHours(), dateTime.getMinutes())},${msg},${currentChannel}`;
         $(this).children().val("");
         

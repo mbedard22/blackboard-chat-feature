@@ -25,7 +25,7 @@
 {% endmacro %}
 
 {% macro addChannel(admin) %}
-<div id="channelPopup" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+<div id="channelPopup" class="relative z-10 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
     <div class="fixed inset-0 z-10 overflow-y-auto">
       <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -43,6 +43,85 @@
                         <option value="pc">Private Channel</option>
                         <option value="gc">Group Channel</option>
                     </select>
+                    <input type="submit" value="Submit" class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm">
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro manageAdmins(users) %}
+<div id="manageAdmins" class="relative z-10 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+            <div class="mt-3 text-center sm:mt-5 flex flex-col items-center">
+                <form id="adminsForm">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">Please check the users you wish to be admin</h3>
+
+                    <div id="inputs" class="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200">
+
+                        <div class="relative flex items-start py-4">
+                            <div class="min-w-0 flex-1 text-sm">
+                                <label for="p0" class="select-none font-medium text-gray-700">gabriel vega</label>
+                            </div>
+                            <div class="ml-3 flex h-5 items-center">
+                                <input id="p0" value="gabrielvega@gmail.com" name="p0" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            </div>
+                        </div>
+
+                        <div class="relative flex items-start py-4">
+                            <div class="min-w-0 flex-1 text-sm">
+                                <label for="p1" class="select-none font-medium text-gray-700">matt bedard</label>
+                            </div>
+                            <div class="ml-3 flex h-5 items-center">
+                                <input id="p1" value="mattbedard@gmail.com" name="p1" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            </div>
+                        </div>
+
+                        <div class="relative flex items-start py-4">
+                            <div class="min-w-0 flex-1 text-sm">
+                                <label for="p2" class="select-none font-medium text-gray-700">anthony lawlor</label>
+                            </div>
+                            <div class="ml-3 flex h-5 items-center">
+                                <input id="p2" value="anthonylawlor@gmail.com" name="p2" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            </div>
+                        </div>
+
+                        <div class="relative flex items-start py-4">
+                            <div class="min-w-0 flex-1 text-sm">
+                                <label for="p3" class="select-none font-medium text-gray-700">andrew farrell</label>
+                            </div>
+                            <div class="ml-3 flex h-5 items-center">
+                                <input id="p3" value="andrewfarrell@gmail.com" name="p3" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <input type="submit" value="Submit" class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm">
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro removeChannel() %}
+<div id="delChannelPopup" class="relative z-10 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+            <div class="mt-3 text-center sm:mt-5 flex flex-col items-center">
+                <form id="delChannelForm">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">Please enter the name for the channel you want to delete</h3>
+                    <input type="text" name="delChannel" id="delChannel" class="my-5 p-2 block w-full h-8 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Name needs to be unique" required>
+
                     <input type="submit" value="Submit" class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm">
                 </form>
             </div>

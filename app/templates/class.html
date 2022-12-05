@@ -1,8 +1,10 @@
 {% extends "base.html" %}
-{% from "macros.html" import channel, channelHeader, message, addChannel %}
+{% from "macros.html" import channel, channelHeader, message, addChannel, manageAdmins, removeChannel %}
 
 {% block content %}
 {{ addChannel(admin) }}
+{{ removeChannel() }}
+{{ manageAdmins(users) }}
 <div class="w-full h-12 border-[1px] border-gray-300 flex items-center">
     <a href="#" class="text-sm font-bold ml-5 ">COMP 4110 P 1 201 Software Engineering I 2022 Fall</a>
     <a href="#">
@@ -28,9 +30,21 @@
         <!-- channel select column -->
         <div class="w-56 h-screen bg-gray-600 p-3">
             <div id="addChannel" class="flex items-center mt-4 cursor-pointer">
-                <p class="ml-2 text-white">Add Channel</p>
                 <i class="fa-regular fa-square-plus ml-3 text-blue-300"></i>
+                <p class="ml-3 text-white">Add Channel</p>
             </div>
+            {% if admin == 1 %}
+            <div id="removeChannel" class="flex items-center mt-4 cursor-pointer">
+                <i class="fa-regular fa-square-minus ml-3 text-blue-300"></i>
+                <p class="ml-3 text-white">Remove Channel</p>
+            </div>
+            {% endif %}
+            {% if admin == 1 %}
+            <div id="manAdmin" class="flex items-center mt-4 cursor-pointer">
+                <i class="fa-regular fa-user text-blue-300 ml-3"></i>
+                <p class="ml-3 text-white">Manage Admins</p>
+            </div>
+            {% endif %}
             {{ channelHeader("Class Channels", "classMinimize") }}
             <ul id="class">
                 {% for c in cc %}

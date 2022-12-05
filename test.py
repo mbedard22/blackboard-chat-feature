@@ -9,7 +9,7 @@ db = connection.cursor()
 # db.execute("drop table userChannels")
 # db.execute("drop table messages")
 
-db.execute("update users set name = 'andrew farrell' where name = 'andrew arrell'")
+db.execute("select * from userChannels")
 print(db.fetchall())
 
 
