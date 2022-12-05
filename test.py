@@ -9,7 +9,7 @@ db = connection.cursor()
 # db.execute("drop table userChannels")
 # db.execute("drop table messages")
 
-db.execute("select * from userChannels")
+db.execute("select * from messages")
 print(db.fetchall())
 
 

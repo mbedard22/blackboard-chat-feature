@@ -44,16 +44,23 @@ def handleMessage(msg):
             connection.commit() 
             connection.close()
 
+    if msgComp[0] == "delete":
+        connection = sqlite3.connect("app/livechat.db")
+        db = connection.cursor()
+        db.execute(f"UPDATE messages SET deleted = 1 WHERE timestamp = '{msgComp[3]}' AND message = '{msgComp[4]}' AND sender = '{msgComp[2]}' AND channelId = '{msgComp[1]}'")
+        connection.commit() 
+        connection.close()
+
 
 def retrieveMessages(channel):
     msgD = "retrieve,"
     
     connection = sqlite3.connect("app/livechat.db")
     db = connection.cursor()
-    db.execute(f"SELECT message, timestamp, sender FROM messages WHERE channelId = '{channel}';")
+    db.execute(f"SELECT message, timestamp, sender, deleted FROM messages WHERE channelId = '{channel}';")
     ret = db.fetchall()
     for r in ret:
-        msgD += f"{r[0]};{r[1]};{r[2]},"
+        msgD += f"{r[0]};{r[1]};{r[2]};{r[3]},"
     connection.close()
 
     return msgD[:-1]

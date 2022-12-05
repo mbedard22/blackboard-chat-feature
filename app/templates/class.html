@@ -1,10 +1,11 @@
 {% extends "base.html" %}
-{% from "macros.html" import channel, channelHeader, message, addChannel, manageAdmins, removeChannel %}
+{% from "macros.html" import channel, channelHeader, addChannel, manageAdmins, removeChannel, delMessage %}
 
 {% block content %}
 {{ addChannel(admin) }}
 {{ removeChannel() }}
 {{ manageAdmins(users) }}
+{{ delMessage() }}
 <div class="w-full h-12 border-[1px] border-gray-300 flex items-center">
     <a href="#" class="text-sm font-bold ml-5 ">COMP 4110 P 1 201 Software Engineering I 2022 Fall</a>
     <a href="#">

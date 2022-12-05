@@ -4,6 +4,9 @@ let groupMinimize = false;
 let livechat = false;
 var socket = io.connect("http://127.0.0.1:8000");
 let currentChannel = "general";
+let delEmail = ""
+let delBody = ""
+let delTimestamp = ""
 
 $(function(){
     //handles the minimizing code 
@@ -173,7 +176,6 @@ $(function(){
         e.preventDefault();
         let msg = $(this).children().val();
         let dateTime = new Date();
-        console.log(dateTime, dateTime.getDay());
         const messageSent = `msg,{{user}},${dateTime.getMonth()}/${dateTime.getDay()}/${dateTime.getFullYear()} ${timeCorrection(dateTime.getHours(), dateTime.getMinutes())},${msg},${currentChannel}`;
         $(this).children().val("");
         
@@ -188,6 +190,7 @@ $(function(){
         if (msgComp[0] == "msg"){
             if (msgComp[4] == currentChannel){
                 $("#messages").append(returnMessage(msgComp[3], msgComp[1], msgComp[2]));
+                attachDelete();
             }
         }
         
@@ -196,21 +199,42 @@ $(function(){
             $("#messages").html("");
             for (let i = 1; i < msgComp.length; i++){
                 let data = msgComp[i].split(";");
-                $("#messages").append(returnMessage(data[0], data[2], data[1]));
+                $("#messages").append(returnMessage(data[0], data[2], data[1], data[3]));
             }
-            
+            attachDelete();
         }
     });
 
-
+    //delete message click event handler
+    $("#delMessageBtn").click(function(){
+        socket.send(`delete,${currentChannel},${delEmail},${delTimestamp},${delBody}`);
+        $("#delMessagePopup").hide();
+    });
+    $("#hideDelPopup").click(function(){
+        $("#delMessagePopup").hide();
+    });
 });
 
-function returnMessage(body, sender, timestamp){
-    let li = `  <div class="flex items-center">
-                    <p class="text-lg font-bold text-black">${sender}</p>
-                    <p class="ml-3 text-sm text-gray-400">${timestamp}</p>
-                </div>
-                <p class="ml-5 mb-5 text-gray-700">${body}</p>`
+function returnMessage(body, sender, timestamp, deleted){
+    let li = ""
+    if (deleted === '1'){
+        li = `  <div class="deleteableMessage cursor-pointer">
+        <div class="flex items-center">
+            <p class="text-lg font-bold text-black">${sender}</p>
+            <p class="ml-3 text-sm text-gray-400">${timestamp}</p>
+        </div>
+        <p class="ml-5 mb-5 text-gray-700">-- deleted --</p>
+    </div>`
+    } else {
+        li = `  <div class="deleteableMessage cursor-pointer">
+        <div class="flex items-center">
+            <p class="text-lg font-bold text-black">${sender}</p>
+            <p class="ml-3 text-sm text-gray-400">${timestamp}</p>
+        </div>
+        <p class="ml-5 mb-5 text-gray-700">${body}</p>
+    </div>`
+    }
+    
     return li;
 }
 
@@ -250,4 +274,18 @@ function gcAddInp(){
         </select>
     </div>`
     return html
+}
+
+function attachDelete(){
+    $(".deleteableMessage").click(function(e){
+        delEmail = $(this).children()[0].children[0].textContent;
+        delTimestamp = $(this).children()[0].children[1].textContent;
+        delBody = $(this).children()[1].textContent;
+
+        currentUser = "{{user}}";
+        currAdmin = "{{admin}}";
+        if (currentUser == delEmail || currAdmin == '1'){
+            $("#delMessagePopup").show();
+        }
+    });
 }
