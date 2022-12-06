@@ -16,9 +16,8 @@
     <div class="w-full bg-blue-700 h-28 p-3 flex justify-bewtween items-center">
         <img class="h-20 w-auto" src="static/images/umllogo.jpg">
         <p class="text-white text-3xl font-bold font-serif ml-10 w-full">University of Massachusetts Lowell<br>Blackbord Learning Management System</p>
-        <a href="{{ url_for('main.index') }}" class="text-white w-48">UML Cource Center</a>
+        <a href="{{ url_for('main.index', user=user) }}" class="text-white w-48">UML Cource Center</a>
     </div>
-
     {% block content %}{% endblock %}
     <!-- imports the js may need to split up into files -->
     {% block scripts %}{% endblock %}    
